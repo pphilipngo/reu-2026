@@ -1,0 +1,21 @@
+.venv/
+venv/
+node_modules/
+.env
+.DS_Store
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# data / model / large files
+*.csv
+*.tsv
+*.zip
+*.tar
+*.gz
+*.pt
+*.pth
+*.safetensors
+*.bin
+*.mp4
+*.mov
