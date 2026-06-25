@@ -1,15 +1,37 @@
-.venv/
-venv/
-node_modules/
-.env
-.DS_Store
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
 .ipynb_checkpoints/
 
-# data / model / large files
+# Environment variables / secrets
+.env
+.env.*
+
+# Mac
+.DS_Store
+
+# Data / model files
+data/
+datasets/
+outputs/
+checkpoints/
+models/
 *.csv
 *.tsv
+*.jsonl
 *.zip
 *.tar
 *.gz
@@ -17,5 +39,8 @@ __pycache__/
 *.pth
 *.safetensors
 *.bin
-*.mp4
-*.mov
+
+# Logs
+*.log
+wandb/
+runs/
