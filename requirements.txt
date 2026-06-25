@@ -1,0 +1,5 @@
+huggingface_hub==1.21.0
+numpy
+pandas==3.0.3
+PyYAML==6.0.3
+regex==2026.5.9
