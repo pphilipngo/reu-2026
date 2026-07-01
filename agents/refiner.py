@@ -13,6 +13,9 @@ refiner_prompt = PromptTemplate.from_template(
         - Remove repetition.
         - Make the summary clear and concise.
         - Make sure the summary is within the word limit.
+        - Make sure the summary sound human-like.
+        - Avoid vague phrases such as "the text discusses" or "Section X states".
+
 
         Draft summary:
         {draft_summary}
@@ -38,7 +41,7 @@ def refiner_answer(state: GraphState) -> GraphState:
     )
 
     doc_num = state["doc_num"]
-    model_file_name = f"summaries/model_summaries/model_gov_doc_{doc_num}_test.txt"
+    model_file_name = f"summaries/model_summaries/model_gov_doc_{doc_num}_v2.txt"
     with open(model_file_name, "w", encoding="utf-8") as file:
         file.write(final)
 

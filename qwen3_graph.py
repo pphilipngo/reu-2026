@@ -42,41 +42,46 @@ def main():
     print(f"Loading {MODEL_ID}...")
     app = build_graph()
 
-    result = app.invoke({"user_request": "Summarize this document.", 
-                         "document": gov_doc,
-                         "doc_num": "3",
-                         "draft_summary": "", 
-                         "critique": "", 
-                         "final_summary": "",
-                         "min_length": str(min_length),
-                         "max_length": str(max_length),
-                         "chunk_size": 300,
-                         "chunks": [],
-                         "filtered_chunks": [],
-                         "chunk_summaries":[],
-                         "chunker_answer": "",
-                         })
+    for i in range(1, 11):
+        gov_doc, ref_sum, ds = output_text_and_ref(ds)
+        write_ref(ref_sum)
 
-    print("\n=== CHUNKER ANSWER ===\n")
-    print(result["chunks"])
 
-    # print("\n=== CHUNKER ANSWER ===\n")
-    # print(result["chunker_answer"])
+        result = app.invoke({"user_request": "Summarize this document.", 
+                            "document": gov_doc,
+                            "doc_num": str(i),
+                            "draft_summary": "", 
+                            "critique": "", 
+                            "final_summary": "",
+                            "min_length": str(min_length),
+                            "max_length": str(max_length),
+                            "chunk_size": 300,
+                            "chunks": [],
+                            "filtered_chunks": [],
+                            "chunk_summaries":[],
+                            "chunker_answer": "",
+                            })
 
-    print("\n=== CHUNKER ANALYZER ANSWER ===\n")
-    print(result["filtered_chunks"])
+        # print("\n=== CHUNKER ANSWER ===\n")
+        # print(result["chunks"])
 
-    print("\n=== SUMMARIZER ANSWER ===\n")
-    print(result["chunk_summaries"])
+        # print("\n=== CHUNKER ANSWER ===\n")
+        # print(result["chunker_answer"])
 
-    print("\n=== DRAFT SUMMARY ===\n")
-    print(result["draft_summary"])
+        # print("\n=== CHUNKER ANALYZER ANSWER ===\n")
+        # print(result["filtered_chunks"])
 
-    print("\n=== CRITIQUE ===\n")
-    print(result["critique"])
+        # print("\n=== SUMMARIZER ANSWER ===\n")
+        # print(result["chunk_summaries"])
 
-    print("\n=== FINAL SUMMARY ===\n")
-    print(result["final_summary"])
+        # print("\n=== DRAFT SUMMARY ===\n")
+        # print(result["draft_summary"])
+
+        # print("\n=== CRITIQUE ===\n")
+        # print(result["critique"])
+
+        # print("\n=== FINAL SUMMARY ===\n")
+        # print(result["final_summary"])
 
 
 if __name__ == "__main__":

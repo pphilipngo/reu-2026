@@ -36,7 +36,7 @@ def chunk_analyzer_answer(state: GraphState, call_qwen=call_qwen) -> GraphState:
             user_prompt=chunker_analyzer_prompt)
         
         
-        summaries[i - 1] = int(score)
+        summaries[i] = int(score)
 
     filtered_index = {key: value for key, value in summaries.items() if value >= 3}
 

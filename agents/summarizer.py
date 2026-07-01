@@ -30,7 +30,7 @@ def summarizer_answer(state: GraphState, call_qwen=call_qwen) -> GraphState:
         - Keep the summary faithful to the original text.
         - If the chunk contains uncertainty, disagreement, or limitations, include them.
         - If the chunk is mostly background or setup, say so clearly.
-        - Avoid vague phrases such as "the text discusses" unless necessary.
+        - Avoid vague phrases such as "the text discusses" or "Section X states".
         - Do not over-compress important technical details.
         
         Chunk {i + 1} of {len(chunks)}:

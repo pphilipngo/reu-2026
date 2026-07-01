@@ -41,7 +41,7 @@ training_args = GRPOConfig(output_dir="./rafts-refiner-grpo",
 
 trainer = GRPOTrainer(model=model,
                       args=training_args,
-                      train_dataset=...,
+                      train_dataset='summarie',
                       reward_funcs=reward_function,
                       )
 

@@ -23,6 +23,9 @@ integrator_prompt = PromptTemplate.from_template(
         - If there are disagreements, caveats, or uncertainty, include them.
         - Do not mention that the summary was produced from chunks unless explicitly necessary.
         - Keep the draft within the word length. 
+        - Make the summary sound human-like.
+        - Avoid vague phrases such as "the text discusses" or "Section X states".
+
 
         Section summaries: {joined_summaries}
         Minimum word length: {min_length}
