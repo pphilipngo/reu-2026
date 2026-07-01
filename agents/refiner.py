@@ -41,7 +41,7 @@ def refiner_answer(state: GraphState) -> GraphState:
     )
 
     doc_num = state["doc_num"]
-    model_file_name = f"summaries/model_summaries/model_gov_doc_{doc_num}_v2.txt"
+    model_file_name = f"summaries/model_summaries/model_gov_doc_{doc_num}.txt"
     with open(model_file_name, "w", encoding="utf-8") as file:
         file.write(final)
 

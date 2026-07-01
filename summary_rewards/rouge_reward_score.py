@@ -1,4 +1,5 @@
 from rouge_score import rouge_scorer
+from statistics import geometric_mean
 
 score_dict = {}
 for i in range(1, 4):
@@ -20,7 +21,6 @@ for i in range(1, 4):
     model_file_name = f'GovReport {i}'
     score_dict[model_file_name] = single_score_dict
 
-print(score_dict)
 
 def compute_rouge_score(model_summary, reference_summary):
     scorer = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL'], use_stemmer=True)
@@ -29,5 +29,8 @@ def compute_rouge_score(model_summary, reference_summary):
     single_score_dict = {"rouge1": scores["rouge1"][2],
                          "rouge2": scores["rouge2"][2],
                          "rougeL": scores["rougeL"][2]}
-    
-    return single_score_dict
+
+    single_score_list = [scores["rouge1"][2], scores["rouge2"][2], scores["rougeL"][2]]
+
+    score = geometric_mean(single_score_list)
+    return score

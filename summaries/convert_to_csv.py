@@ -1,29 +1,38 @@
 import os
 import csv
 import regex as re
+from summary_rewards import *
 
 # Define the path to your two folders
-model_folder, system_folder = "summaries/model_summaries", "summaries/system_summaries"
+model_folder, reference_folder = "summaries/model_summaries", "summaries/reference_summaries"
 
 gov_dataset = "GovReport"
 output_csv = "summaries/summaries.csv"
 
-with open(output_csv, 'w', newline='', encoding='utf-8') as outfile:
-    csvwriter = csv.writer(outfile)
-    # Write headers
-    csvwriter.writerow(["Model Summary", "System Summary", "Dataset"])
+def main():
+    with open(output_csv, 'w', newline='', encoding='utf-8') as outfile:
+        csvwriter = csv.writer(outfile)
+        # Write headers
+        csvwriter.writerow(["model_summary", "referenece_summary", "dataset", "reward"])
 
-    for model_filename, system_filename in zip(os.listdir(model_folder), os.listdir(system_folder)):
-        if model_filename.endswith('.txt') and system_filename.endswith('.txt'):
-            model_file_path = os.path.join(model_folder, model_filename)
-            system_file_path = os.path.join(system_folder, system_filename)
+        for model_filename, reference_filename in zip(os.listdir(model_folder), os.listdir(refrence_folder)):
+            if model_filename.endswith('.txt') and reference_filename.endswith('.txt'):
+                model_file_path = os.path.join(model_folder, model_filename)
+                ref_file_path = os.path.join(reference_folder, reference_filename)
 
-            with open(model_file_path, 'r', encoding='utf-8') as txtfile:
-                model_content = txtfile.read()
-            with open(system_file_path, 'r', encoding='utf-8') as txtfile:
-                system_content = txtfile.read()
+                with open(model_file_path, 'r', encoding='utf-8') as txtfile:
+                    model_content = txtfile.read()
+                with open(ref_file_path, 'r', encoding='utf-8') as txtfile:
+                    ref_content = txtfile.read()
 
-            csvwriter.writerow([model_content, system_content, gov_dataset])
+                reward_score = reward_function_single(model_content, ref_content)
+                
+                csvwriter.writerow([model_content, ref_content, gov_dataset, reward_score])
+
+
+if __name__ == "__main__":
+    main()
+
     
     
     # for folder in folders:
