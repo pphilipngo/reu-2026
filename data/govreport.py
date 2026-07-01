@@ -10,8 +10,8 @@ def output_text_and_ref(ds):
     return orig_text, reference, ds
 
 def write_ref(reference, index):
-    system_file_name = f"summaries/system_summaries/ref_gov_doc_{index}"
-    with open(system_file_name, "w", encoding="utf-8") as file:
+    reference_file_name = f"summaries/reference_summaries/ref_gov_doc_{index}"
+    with open(reference_file_name, "w", encoding="utf-8") as file:
         file.write(reference)
 
 ds = load_govreport()
