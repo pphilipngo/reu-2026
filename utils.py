@@ -6,10 +6,13 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 from langchain_huggingface import HuggingFacePipeline
 
 from agents import * 
+from data import *
 
 MODEL_ID = "Qwen/Qwen3-1.7B"
 min_length = 400
 max_length = 600
+
+ds = load_govreport()
 
 class GraphState(TypedDict):
 
