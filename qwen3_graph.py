@@ -43,6 +43,8 @@ def main():
     app = build_graph()
 
     for i in range(1, 11):
+        ds = load_govreport()
+        
         gov_doc, ref_sum, ds = output_text_and_ref(ds)
         write_ref(ref_sum)
 
