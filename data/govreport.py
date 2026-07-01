@@ -9,8 +9,8 @@ def output_text_and_ref(ds):
     orig_text, reference = text["report"], text["summary"]
     return orig_text, reference, ds
 
-def write_ref(reference):
-    system_file_name = f"summaries/system_summaries/ref_gov_doc_{i}"
+def write_ref(reference, index):
+    system_file_name = f"summaries/system_summaries/ref_gov_doc_{index}"
     with open(system_file_name, "w", encoding="utf-8") as file:
         file.write(reference)
 
