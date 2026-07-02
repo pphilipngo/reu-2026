@@ -54,7 +54,7 @@ def build_llm() -> tuple[HuggingFacePipeline, AutoTokenizer]:
         task="text-generation",
         model=model,
         tokenizer=tokenizer,
-        max_new_tokens=1024,
+        max_new_tokens=512,
         temperature=0.3,
         top_p=0.9,
         do_sample=True,
