@@ -1,5 +1,5 @@
-from rouge_reward_score import *
-from length_penalty_score import *
+from .rouge_reward_score import *
+from .length_penalty_score import *
 
 
 def reward_function(model_summaries, reference_summaries):
