@@ -41,10 +41,9 @@ def build_graph():
 def main():
     print(f"Loading {MODEL_ID}...")
     app = build_graph()
-
+    ds = load_govreport()
+    
     for i in range(1, 11):
-        ds = load_govreport()
-
         gov_doc, ref_sum, ds = output_text_and_ref(ds)
         write_ref(ref_sum, i)
 
