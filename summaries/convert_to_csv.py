@@ -1,7 +1,16 @@
 import os
 import csv
 import regex as re
-from summary_rewards import *
+
+from pathlib import Path
+import sys
+THIS_FILE = Path(__file__).resolve()
+SUMMARIES_DIR = THIS_FILE.parent
+PROJECT_ROOT = THIS_FILE.parents[1]
+
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from summary_rewards.reward_func import reward_function_single
 
 # Define the path to your two folders
 model_folder, reference_folder = "summaries/model_summaries", "summaries/reference_summaries"
@@ -15,7 +24,7 @@ def main():
         # Write headers
         csvwriter.writerow(["model_summary", "referenece_summary", "dataset", "reward"])
 
-        for model_filename, reference_filename in zip(os.listdir(model_folder), os.listdir(refrence_folder)):
+        for model_filename, reference_filename in zip(os.listdir(model_folder), os.listdir(reference_folder)):
             if model_filename.endswith('.txt') and reference_filename.endswith('.txt'):
                 model_file_path = os.path.join(model_folder, model_filename)
                 ref_file_path = os.path.join(reference_folder, reference_filename)
