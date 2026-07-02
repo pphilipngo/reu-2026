@@ -21,9 +21,7 @@ def chunk_analyzer_answer(state: GraphState, call_qwen=call_qwen) -> GraphState:
     for i, chunk in enumerate(chunks):
         chunker_analyzer_prompt = f"""
         You are a chunker analyzer. Given the chunk, score it on a scale of 1-4 on how important this chunk is to the overall document.
-        Determine whether this chunk is necessary for the final summary. Reference the original document. Only output the numeric score, nothing else.
-        Original document: 
-        {state["document"]}
+        Determine whether this chunk is necessary for the final summary. Only output the numeric score, nothing else.
         
         Chunk {i + 1} of {len(chunks)}:
         {chunk}
@@ -36,7 +34,7 @@ def chunk_analyzer_answer(state: GraphState, call_qwen=call_qwen) -> GraphState:
             user_prompt=chunker_analyzer_prompt)
         
         
-        summaries[i - 1] = int(score)
+        summaries[i] = int(score)
 
     filtered_index = {key: value for key, value in summaries.items() if value >= 3}
 

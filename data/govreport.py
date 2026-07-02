@@ -1,22 +1,27 @@
 from datasets import load_dataset
 
-dataset = load_dataset('ccdv/govreport-summarization', split='train', streaming=True)
+def load_govreport():
+    ds = load_dataset('ccdv/govreport-summarization', split='train', streaming=True)
+    return iter(ds)
 
-it_dataset = iter(dataset)
-gov_doc = next(it_dataset)
-gov_doc = next(it_dataset)
-gov_doc = next(it_dataset)["report"]
+def output_text_and_ref(ds):
+    text = next(ds)
+    orig_text, reference = text["report"], text["summary"]
+    return orig_text, reference, ds
 
-def load_govreport(dataset=dataset):
-    return str(next(iter(dataset)))
+def write_ref(reference, index):
+    reference_file_name = f"summaries/reference_summaries/ref_gov_doc_{index}.txt"
+    with open(reference_file_name, "w", encoding="utf-8") as file:
+        file.write(reference)
 
+ds = load_govreport()
 
 def main():
     for i in range(1, 4):
-        text = next(iter(dataset))
+        text = next(ds)
         orig_text, reference = text["report"], text["summary"]
 
-        system_file_name = f"summaries/system_summaries/sys_gov_doc_{i}"
+        system_file_name = f"summaries/system_summaries/ref_gov_doc_{i}.txt"
         with open(system_file_name, "w", encoding="utf-8") as file:
             file.write(reference)
 
