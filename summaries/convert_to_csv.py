@@ -24,7 +24,7 @@ def main():
         # Write headers
         csvwriter.writerow(["model_summary", "referenece_summary", "dataset", "reward"])
 
-        for model_filename, reference_filename in zip(os.listdir(model_folder), os.listdir(reference_folder)):
+        for model_filename, reference_filename in zip(sorted(os.listdir(model_folder)), sorted(os.listdir(reference_folder))):
             if model_filename.endswith('.txt') and reference_filename.endswith('.txt'):
                 model_file_path = os.path.join(model_folder, model_filename)
                 ref_file_path = os.path.join(reference_folder, reference_filename)
