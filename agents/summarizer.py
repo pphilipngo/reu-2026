@@ -14,7 +14,6 @@ def summarizer_answer(state: GraphState, call_qwen=call_qwen) -> GraphState:
 
     
     chunks = state["filtered_chunks"]
-    # chunks = state["chunker_answer"].split("~")
     summaries = []
     for i, chunk in enumerate(chunks):
         summarizer_prompt = f"""
@@ -46,6 +45,8 @@ def summarizer_answer(state: GraphState, call_qwen=call_qwen) -> GraphState:
         summaries.append(summary)
 
     return {**state, "chunk_summaries": summaries}
-    # return {**state, }
+
+
+
 
 

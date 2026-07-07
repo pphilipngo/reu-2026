@@ -103,16 +103,3 @@ def make_qwen_caller(llm: HuggingFacePipeline, tokenizer: AutoTokenizer):
 
 llm, tokenizer = build_llm()
 call_qwen = make_qwen_caller(llm, tokenizer)
-
-def chunk_text(text, n):
-    chunked_text = []
-    len_text = len(text.split())
-    while len_text > 0:
-        if len_text < n:
-            chunked_text.append(text)
-            break
-        n_split = text.split(maxsplit=n)
-        chunk, text = " ".join(n_split[:n]), n_split[n]
-        chunked_text.append(chunk)
-        len_text = len(text.split())
-    return chunked_text
