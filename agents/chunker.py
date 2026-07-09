@@ -26,8 +26,8 @@ def chunk_text(text, chunk_size):
     len_text = len(split_text)
 
     for i in range(0, len_text, chunk_size - overlap):
-        chunk_tokens = split_text[i:i + chunk_size]
-        chunks.append(chunk_tokens)
+        curr_chunks = split_text[i:i + chunk_size]
+        chunked_text.append(curr_chunks)
 
     # while len_text > 0:
     #     if len_text < n:
