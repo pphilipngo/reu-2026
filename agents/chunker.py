@@ -21,11 +21,11 @@ from utils import *
 #     )
 
 def chunk_text(text, chunk_size):
-    chunked_text, overlap = [], (n / 10) * 2
+    chunked_text, overlap = [], (chunk_size / 10) * 2
     split_text = text.split()
     len_text = len(split_text)
 
-    for i in range(0, len_text, n - overlap):
+    for i in range(0, len_text, chunk_size - overlap):
         chunk_tokens = split_text[i:i + chunk_size]
         chunks.append(chunk_tokens)
 
