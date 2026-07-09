@@ -21,7 +21,7 @@ from utils import *
 #     )
 
 def chunk_text(text, chunk_size):
-    chunked_text, overlap = [], (chunk_size / 10) * 2
+    chunked_text, overlap = [], int((int(chunk_size) / 10) * 2)
     split_text = text.split()
     len_text = len(split_text)
 
