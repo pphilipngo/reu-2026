@@ -76,7 +76,7 @@ def main():
                                 })
             
             
-            csvwriter.writerow(["num", "reward"])
+            output_writer.writerow(["num", "reward"])
 
             reward_score = reward_function_single(result["final_summary"], ref_sum)
                     
