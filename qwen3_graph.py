@@ -11,6 +11,14 @@ from agents import *
 from utils import *
 from data import *
 
+import os
+import csv
+import regex as re
+from pathlib import Path
+import sys
+from summary_rewards import *
+
+
 
 MODEL_ID = "Qwen/Qwen3-1.7B"
 
@@ -42,26 +50,37 @@ def main():
     print(f"Loading {MODEL_ID}...")
     app = build_graph()
     ds = load_govreport()
-    
-    for i in range(1, 11):
-        gov_doc, ref_sum, ds = output_text_and_ref(ds)
-        write_ref(ref_sum, i)
+    output_rewards = "summaries/output_rewards.csv"    
+
+    with open(output_rewards, 'w', newline='', encoding='utf-8') as output_file:
+        output_writer = csv.writer(output_file)
+
+        for i in range(1, 101):
+            gov_doc, ref_sum, ds = output_text_and_ref(ds)
+            # write_ref(ref_sum, i)
 
 
-        result = app.invoke({"user_request": "Summarize this document.", 
-                            "document": gov_doc,
-                            "doc_num": str(i),
-                            "draft_summary": "", 
-                            "critique": "", 
-                            "final_summary": "",
-                            "min_length": str(min_length),
-                            "max_length": str(max_length),
-                            "chunk_size": 300,
-                            "chunks": [],
-                            "filtered_chunks": [],
-                            "chunk_summaries":[],
-                            "chunker_answer": "",
-                            })
+            result = app.invoke({"user_request": "Summarize this document.", 
+                                "document": gov_doc,
+                                "doc_num": str(i),
+                                "draft_summary": "", 
+                                "critique": "", 
+                                "final_summary": "",
+                                "min_length": str(min_length),
+                                "max_length": str(max_length),
+                                "chunk_size": 300,
+                                "chunks": [],
+                                "filtered_chunks": [],
+                                "chunk_summaries":[],
+                                "chunker_answer": "",
+                                })
+            
+            
+            csvwriter.writerow(["num", "reward"])
+
+            reward_score = reward_function_single(result["final_summary"], ref_sum)
+                    
+            output_writer.writerow([i, reward_score])
 
         # print("\n=== CHUNKER ANSWER ===\n")
         # print(result["chunks"])
