@@ -65,7 +65,7 @@ def main():
     with open(output_rewards, 'w', newline='', encoding='utf-8') as output_file:
         output_writer = csv.writer(output_file)
 
-        for i in range(1, 101):
+        for i in range(1, 21):
             gov_doc, ref_sum, ds = output_text_and_ref(ds)
             # write_ref(ref_sum, i)
 
@@ -91,6 +91,8 @@ def main():
             reward_score = reward_function_single(result["final_summary"], ref_sum)
                     
             output_writer.writerow([i, reward_score])
+
+            print(f"======== Finished Document {i} ========")
 
         # print("\n=== CHUNKER ANSWER ===\n")
         # print(result["chunks"])
