@@ -34,7 +34,7 @@ def chunk_analyzer_answer(state: GraphState, call_qwen_batch) -> GraphState:
         Score:
         """.strip()
 
-        user_prompts.append(prompt)
+        user_prompts.append(chunker_analyzer_prompt)
 
     outputs = call_qwen_batch(system_prompt=("You evaluate document chunks. Return only a numeric score from 1 to 4."),
                                 user_prompts=user_prompts,
