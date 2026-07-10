@@ -97,7 +97,7 @@ test_prompt = PromptTemplate.from_template(
 
 def integrator_answer(state: GraphState, call_qwen) -> GraphState:
     chunk_summaries = state["chunk_summaries"]
-    global_summary, num_summaries = chunk_sums[0], len(chunk_sums)
+    global_summary, num_summaries = chunk_summaries[0], len(chunk_summaries)
     for i in range(1, num_summaries):
         user_prompt = test_prompt.format(next_sum_num=i + 1,
                                         num_summaries=num_summaries,
