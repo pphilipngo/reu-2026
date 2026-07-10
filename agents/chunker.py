@@ -39,7 +39,7 @@ def chunk_text(text, chunk_size):
     #     len_text = len(text.split())
     return chunked_text
 
-def chunker_answer(state: GraphState, call_qwen=call_qwen) -> GraphState:
+def chunker_answer(state: GraphState,) -> GraphState:
     # user_prompt = chunker_prompt.format(document=state["document"])
     # draft = call_qwen(
     #     system_prompt="You are a helpful assistant that separates text to help summarize text.",
