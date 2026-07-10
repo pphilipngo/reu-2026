@@ -69,7 +69,7 @@ reviewer_prompt = PromptTemplate.from_template(
     # Original document:
     # {document}
 
-def reviewer_answer(state: GraphState, call_qwen=call_qwen) -> GraphState:
+def reviewer_answer(state: GraphState, call_qwen) -> GraphState:
     user_prompt = reviewer_prompt.format(draft_summary=state["draft_summary"],
                                          document=state["document"]
                                          )

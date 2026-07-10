@@ -3,7 +3,7 @@ from langchain_core.prompts import PromptTemplate
 from utils import *
 
 
-def summarizer_answer(state: GraphState, call_qwen=call_qwen) -> GraphState:
+def summarizer_answer(state: GraphState, call_qwen) -> GraphState:
     # user_prompt = summarizer_prompt.format(user_request=state["user_request"],
     #                                        chunker_answer=state["chunker_answer"])
 

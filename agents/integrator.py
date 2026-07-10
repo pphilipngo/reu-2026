@@ -95,7 +95,7 @@ def integrator_answer(state: GraphState, call_qwen=call_qwen) -> GraphState:
     return {**state, "draft_summary": draft}
 
 
-def test_answer(state: GraphState, call_qwen=call_qwen) -> GraphState:
+def test_answer(state: GraphState, call_qwen) -> GraphState:
     chunk_summaries = state["chunk_summaries"]
     global_summary, num_summaries = chunk_sums[0], len(chunk_sums)
     for i in range(1, num_summaries):
