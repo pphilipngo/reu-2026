@@ -32,14 +32,6 @@ class GraphState(TypedDict):
     doc_num: str
 
 
-def strip_qwen_thinking(text: str) -> str:
-    """
-    Qwen3 can emit <think>...</think> blocks.
-    For this beginner pipeline, remove them from the visible output.
-    """
-    # text = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
-    return text
-
 
 def build_llm() -> tuple[HuggingFacePipeline, AutoTokenizer]:
     tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
@@ -63,7 +55,7 @@ def build_llm() -> tuple[HuggingFacePipeline, AutoTokenizer]:
     )
 
     llm = HuggingFacePipeline(pipeline=text_summarization_pipeline)
-    return llm, tokenizer
+    return llm, tokenizer, text_summarization_pipeline
 
 
 def format_qwen_prompt(tokenizer: AutoTokenizer, system_prompt: str, user_prompt: str) -> str:
@@ -101,5 +93,23 @@ def make_qwen_caller(llm: HuggingFacePipeline, tokenizer: AutoTokenizer):
 
     return qwen_model
 
-llm, tokenizer = build_llm()
-call_qwen = make_qwen_caller(llm, tokenizer)
+def make_qwen_caller(llm, tokenizer):
+
+
+def make_qwen_batch_caller(text_generation_pipeline, tokenizer):
+    def call_qwen_batch(system_prompt: str,
+                        user_prompts: list[str],
+                        batch_size: int = 2,
+                        max_new_tokens: int = 8,
+                        do_sample: bool = False,) -> list[str]:
+        prompts = [format_qwen_prompt(tokenizer, system_prompt, user_prompt,) for user_prompt in user_prompts]
+
+        outputs = text_generation_pipeline(prompts,
+                                            batch_size=batch_size,
+                                            max_new_tokens=max_new_tokens,
+                                            do_sample=do_sample,
+                                            return_full_text=False,)
+
+        return [output[0]["generated_text"] for output in outputs]
+
+    return call_qwen_batch

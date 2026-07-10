@@ -22,20 +22,30 @@ from summary_rewards import *
 
 MODEL_ID = "Qwen/Qwen3-1.7B"
 
+llm, tokenizer, text_summarization_pipeline = build_llm()
+
+call_qwen = make_qwen_caller(
+    llm,
+    tokenizer,
+)
+
+call_qwen_batch = make_qwen_batch_caller(
+    text_summarization_pipeline,
+    tokenizer,
+)
 
 def build_graph():
 
     graph = StateGraph(GraphState)
 
     graph.add_node("chunker_answer", chunker_answer)
-    graph.add_node("chunk_analyzer_answer", chunk_analyzer_answer)
+    graph.add_node("chunk_analyzer_answer", lambda state: chunk_analyzer_answer(state, call_qwen_batch))
     graph.add_node("summarizer_answer", summarizer_answer)
     graph.add_node("integrator_answer", integrator_answer)
     graph.add_node("reviewer_answer", reviewer_answer)
     graph.add_node("refiner_answer", refiner_answer)
 
     graph.add_edge(START, "chunker_answer")
-    # graph.add_edge("chunker_answer", 'summarizer_answer')
     graph.add_edge("chunker_answer", 'chunk_analyzer_answer')
     graph.add_edge("chunk_analyzer_answer", 'summarizer_answer')
     graph.add_edge("summarizer_answer", "integrator_answer")
