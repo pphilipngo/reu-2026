@@ -65,7 +65,7 @@ def main():
     with open(output_rewards, 'w', newline='', encoding='utf-8') as output_file:
         output_writer = csv.writer(output_file)
 
-        for i in range(1, 21):
+        for i in range(1, 11):
             gov_doc, ref_sum, ds = output_text_and_ref(ds)
             # write_ref(ref_sum, i)
 
