@@ -93,9 +93,6 @@ def make_qwen_caller(llm: HuggingFacePipeline, tokenizer: AutoTokenizer):
 
     return qwen_model
 
-def make_qwen_caller(llm, tokenizer):
-
-
 def make_qwen_batch_caller(text_generation_pipeline, tokenizer):
     def call_qwen_batch(system_prompt: str,
                         user_prompts: list[str],
