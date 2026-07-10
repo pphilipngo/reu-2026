@@ -46,7 +46,7 @@ def chunk_analyzer_answer(state: GraphState, call_qwen_batch) -> GraphState:
 
     filtered_chunks = [chunk for chunk, score in zip(chunks, scores) if score >= 3]
 
-    return {**state, "chunk_scores": scores, "filtered_chunks": filtered_chunks,}
+    return {**state, "chunk_scores": scores, "filtered_chunks": filtered_chunks}
 
     #     score = call_qwen(
     #         system_prompt="You are a chunker analyzer. Only choose the most important chunks.",
@@ -61,35 +61,3 @@ def chunk_analyzer_answer(state: GraphState, call_qwen_batch) -> GraphState:
 
     # return {**state, "filtered_chunks": filtered_chunks}
     # return {**state, }
-
-
-    for i, chunk in enumerate(chunks):
-
-
-    outputs = call_qwen_batch(
-        system_prompt=(
-            "You evaluate document chunks. "
-            "Return only a numeric score from 1 to 4."
-        ),
-        user_prompts=user_prompts,
-        batch_size=2,
-        max_new_tokens=4,
-        do_sample=False,
-    )
-
-    scores = [
-        parse_score(output)
-        for output in outputs
-    ]
-
-    filtered_chunks = [
-        chunk
-        for chunk, score in zip(chunks, scores)
-        if score >= 3
-    ]
-
-    return {
-        **state,
-        "chunk_scores": scores,
-        "filtered_chunks": filtered_chunks,
-    }
