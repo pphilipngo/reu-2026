@@ -67,35 +67,35 @@ test_prompt = PromptTemplate.from_template(
         """
     )
 
-def integrator_answer(state: GraphState, call_qwen=call_qwen) -> GraphState:
-    # user_prompt = integrator_prompt.format(user_request=state["user_request"],
-    #                                        summarizer_answer=state["summarizer_answer"],
-    #                                        min_length=state["min_length"],
-    #                                        max_length=state["max_length"])
+# def integrator_answer(state: GraphState, call_qwen=call_qwen) -> GraphState:
+#     # user_prompt = integrator_prompt.format(user_request=state["user_request"],
+#     #                                        summarizer_answer=state["summarizer_answer"],
+#     #                                        min_length=state["min_length"],
+#     #                                        max_length=state["max_length"])
     
-    # draft = call_qwen(
-    #     system_prompt="You are a helpful assistant that helps summarize text.",
-    #     user_prompt=user_prompt,
-    # )
+#     # draft = call_qwen(
+#     #     system_prompt="You are a helpful assistant that helps summarize text.",
+#     #     user_prompt=user_prompt,
+#     # )
 
-    joined_summaries = "\n\n".join(
-        f"Section {i + 1} Summary:\n{summary}"
-        for i, summary in enumerate(state["chunk_summaries"])
-    )
+#     joined_summaries = "\n\n".join(
+#         f"Section {i + 1} Summary:\n{summary}"
+#         for i, summary in enumerate(state["chunk_summaries"])
+#     )
 
-    user_prompt = integrator_prompt.format(joined_summaries=joined_summaries,
-                                           min_length=state["min_length"],
-                                           max_length=state["max_length"])
+#     user_prompt = integrator_prompt.format(joined_summaries=joined_summaries,
+#                                            min_length=state["min_length"],
+#                                            max_length=state["max_length"])
 
-    draft = call_qwen(
-        system_prompt="You are a helpful assistant that combines summaries together to form one cohesive summary.",
-        user_prompt=user_prompt,
-        )
+#     draft = call_qwen(
+#         system_prompt="You are a helpful assistant that combines summaries together to form one cohesive summary.",
+#         user_prompt=user_prompt,
+#         )
     
-    return {**state, "draft_summary": draft}
+#     return {**state, "draft_summary": draft}
 
 
-def test_answer(state: GraphState, call_qwen) -> GraphState:
+def integrator_answer(state: GraphState, call_qwen) -> GraphState:
     chunk_summaries = state["chunk_summaries"]
     global_summary, num_summaries = chunk_sums[0], len(chunk_sums)
     for i in range(1, num_summaries):
