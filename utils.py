@@ -89,7 +89,7 @@ def make_qwen_caller(llm: HuggingFacePipeline, tokenizer: AutoTokenizer):
     def qwen_model(system_prompt: str, user_prompt: str):
         prompt = format_qwen_prompt(tokenizer, system_prompt, user_prompt)
         output = llm.invoke(prompt)
-        return strip_qwen_thinking(str(output))
+        return str(output)
 
     return qwen_model
 

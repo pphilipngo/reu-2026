@@ -40,7 +40,7 @@ def build_graph():
 
     graph.add_node("chunker_answer", chunker_answer)
     graph.add_node("chunk_analyzer_answer", lambda state: chunk_analyzer_answer(state, call_qwen_batch))
-    graph.add_node("summarizer_answer", lambda state: summarizer_answer(state, call_qwen))
+    graph.add_node("summarizer_answer", lambda state: summarizer_answer(state, call_qwen_batch))
     graph.add_node("integrator_answer", lambda state: integrator_answer(state, call_qwen))
     graph.add_node("reviewer_answer", lambda state: reviewer_answer(state, call_qwen))
     graph.add_node("refiner_answer", lambda state: refiner_answer(state, call_qwen))
