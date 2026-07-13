@@ -20,7 +20,26 @@ from utils import *
 #         """
 #     )
 
-def chunker_answer(state: GraphState, call_qwen=call_qwen) -> GraphState:
+def chunk_text(text, chunk_size):
+    chunked_text, overlap = [], int((int(chunk_size) / 10) * 2)
+    split_text = text.split()
+    len_text = len(split_text)
+
+    for i in range(0, len_text, chunk_size - overlap):
+        curr_chunks = split_text[i:i + chunk_size]
+        chunked_text.append(curr_chunks)
+
+    # while len_text > 0:
+    #     if len_text < n:
+    #         chunked_text.append(text)
+    #         break
+    #     n_split = text.split(maxsplit=n)
+    #     chunk, text = " ".join(n_split[:n]), n_split[n]
+    #     chunked_text.append(chunk)
+    #     len_text = len(text.split())
+    return chunked_text
+
+def chunker_answer(state: GraphState,) -> GraphState:
     # user_prompt = chunker_prompt.format(document=state["document"])
     # draft = call_qwen(
     #     system_prompt="You are a helpful assistant that separates text to help summarize text.",
@@ -30,3 +49,5 @@ def chunker_answer(state: GraphState, call_qwen=call_qwen) -> GraphState:
     draft = chunk_text(state["document"], state["chunk_size"])
     return {**state, "chunks": draft}
     # return {**state, "chunker_answer": draft}
+
+

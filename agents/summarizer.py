@@ -3,7 +3,7 @@ from langchain_core.prompts import PromptTemplate
 from utils import *
 
 
-def summarizer_answer(state: GraphState, call_qwen=call_qwen) -> GraphState:
+def summarizer_answer(state: GraphState, call_qwen_batch) -> GraphState:
     # user_prompt = summarizer_prompt.format(user_request=state["user_request"],
     #                                        chunker_answer=state["chunker_answer"])
 
@@ -14,8 +14,8 @@ def summarizer_answer(state: GraphState, call_qwen=call_qwen) -> GraphState:
 
     
     chunks = state["filtered_chunks"]
-    # chunks = state["chunker_answer"].split("~")
     summaries = []
+    user_prompts = []
     for i, chunk in enumerate(chunks):
         summarizer_prompt = f"""
         You are the Section Summarizer Agent in a multi-agent long-document summarization system.
@@ -37,15 +37,19 @@ def summarizer_answer(state: GraphState, call_qwen=call_qwen) -> GraphState:
         {chunk}
         
         Section summary:
-        """
+        """.strip()
 
-        summary = call_qwen(
-            system_prompt="You are a section summarizer. Summarize the following document chunk clearly and faithfully.",
-            user_prompt=summarizer_prompt)
+        user_prompts.append(summarizer_prompt)
+
+    outputs = call_qwen_batch(system_prompt=("You are a section summarizer. Summarize the following document chunk clearly and faithfully."),
+                            user_prompts=user_prompts,
+                            batch_size=3,
+                            max_new_tokens=4,
+                            do_sample=False,)
         
-        summaries.append(summary)
+    return {**state, "chunk_summaries": outputs}
 
-    return {**state, "chunk_summaries": summaries}
-    # return {**state, }
+
+
 
 

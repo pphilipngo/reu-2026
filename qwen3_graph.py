@@ -11,23 +11,41 @@ from agents import *
 from utils import *
 from data import *
 
+import os
+import csv
+import regex as re
+from pathlib import Path
+import sys
+from summary_rewards import *
+
+
 
 MODEL_ID = "Qwen/Qwen3-1.7B"
 
+llm, tokenizer, text_summarization_pipeline = build_llm()
+
+call_qwen = make_qwen_caller(
+    llm,
+    tokenizer,
+)
+
+call_qwen_batch = make_qwen_batch_caller(
+    text_summarization_pipeline,
+    tokenizer,
+)
 
 def build_graph():
 
     graph = StateGraph(GraphState)
 
     graph.add_node("chunker_answer", chunker_answer)
-    graph.add_node("chunk_analyzer_answer", chunk_analyzer_answer)
-    graph.add_node("summarizer_answer", summarizer_answer)
-    graph.add_node("integrator_answer", integrator_answer)
-    graph.add_node("reviewer_answer", reviewer_answer)
-    graph.add_node("refiner_answer", refiner_answer)
+    graph.add_node("chunk_analyzer_answer", lambda state: chunk_analyzer_answer(state, call_qwen_batch))
+    graph.add_node("summarizer_answer", lambda state: summarizer_answer(state, call_qwen_batch))
+    graph.add_node("integrator_answer", lambda state: integrator_answer(state, call_qwen))
+    graph.add_node("reviewer_answer", lambda state: reviewer_answer(state, call_qwen))
+    graph.add_node("refiner_answer", lambda state: refiner_answer(state, call_qwen))
 
     graph.add_edge(START, "chunker_answer")
-    # graph.add_edge("chunker_answer", 'summarizer_answer')
     graph.add_edge("chunker_answer", 'chunk_analyzer_answer')
     graph.add_edge("chunk_analyzer_answer", 'summarizer_answer')
     graph.add_edge("summarizer_answer", "integrator_answer")
@@ -42,26 +60,37 @@ def main():
     print(f"Loading {MODEL_ID}...")
     app = build_graph()
     ds = load_govreport()
-    
-    for i in range(1, 11):
-        gov_doc, ref_sum, ds = output_text_and_ref(ds)
-        write_ref(ref_sum, i)
+    output_rewards = "summaries/output_rewards.csv"    
+
+    with open(output_rewards, 'w', newline='', encoding='utf-8') as output_file:
+        output_writer = csv.writer(output_file)
+        output_writer.writerow(["num", "reward"])
+
+        for i in range(1, 101):
+            gov_doc, ref_sum, ds = output_text_and_ref(ds)
+            # write_ref(ref_sum, i)
 
 
-        result = app.invoke({"user_request": "Summarize this document.", 
-                            "document": gov_doc,
-                            "doc_num": str(i),
-                            "draft_summary": "", 
-                            "critique": "", 
-                            "final_summary": "",
-                            "min_length": str(min_length),
-                            "max_length": str(max_length),
-                            "chunk_size": 300,
-                            "chunks": [],
-                            "filtered_chunks": [],
-                            "chunk_summaries":[],
-                            "chunker_answer": "",
-                            })
+            result = app.invoke({"user_request": "Summarize this document.", 
+                                "document": gov_doc,
+                                "doc_num": str(i),
+                                "draft_summary": "", 
+                                "critique": "", 
+                                "final_summary": "",
+                                "min_length": str(min_length),
+                                "max_length": str(max_length),
+                                "chunk_size": 300,
+                                "chunks": [],
+                                "filtered_chunks": [],
+                                "chunk_summaries":[],
+                                "chunker_answer": "",
+                                })
+            
+            reward_score = reward_function_single(result["final_summary"], ref_sum)
+                    
+            output_writer.writerow([i, reward_score])
+
+            print(f"======== Finished Document {i} ========")
 
         # print("\n=== CHUNKER ANSWER ===\n")
         # print(result["chunks"])

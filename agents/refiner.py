@@ -30,7 +30,7 @@ refiner_prompt = PromptTemplate.from_template(
         """
     )
 
-def refiner_answer(state: GraphState) -> GraphState:
+def refiner_answer(state: GraphState, call_qwen) -> GraphState:
     user_prompt = refiner_prompt.format(draft_summary=state["draft_summary"], 
                                        critique=state["critique"],
                                        min_length=state["min_length"],

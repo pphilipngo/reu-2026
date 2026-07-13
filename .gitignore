@@ -29,7 +29,6 @@ datasets/
 outputs/
 checkpoints/
 models/
-*.csv
 *.tsv
 *.jsonl
 *.zip
