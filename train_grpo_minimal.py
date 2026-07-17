@@ -13,7 +13,7 @@ Example:
       --data_path summaries/summaries.csv \
       --draft_col model_summary \
       --reference_col reference_summary \
-      --model_id Qwen/Qwen3-0.6B \
+      --model_id Qwen/Qwen3-1.7B \
       --max_steps 5
 
 For your original model:
@@ -35,6 +35,19 @@ from datasets import load_dataset
 from rouge_score import rouge_scorer
 from transformers import AutoTokenizer
 from trl import GRPOConfig, GRPOTrainer
+
+from datasets import load_dataset
+from trl import GRPOTrainer
+from summary_rewards import *
+
+dataset = load_dataset('csv', data_files='summaries/summaries.csv')
+
+trainer = GRPOTrainer(
+    model="Qwen/Qwen3-1.7B",
+    reward_funcs=reward_function_single,
+    train_dataset=dataset,
+)
+trainer.train()
 
 
 def build_prompt(draft_summary: str) -> str:
